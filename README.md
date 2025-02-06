@@ -118,9 +118,21 @@
 
   ```cpp
   
-  // 해당 과목을 수강하는 학생들의 점수 총합
-  int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0);
-  double AvgScore = (double) SumScore / (double) StudentScores.size();
+  // 특정 과목에 대한 평균 점수
+  double GetAverageScoreBySubject(string Subject)
+  {
+  	vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
+  
+  	// 해당 과목의 점수 합계
+  	int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+  		[](int A, pair<int, int> B)
+  		{
+  			return A + B.second;
+  		});
+  
+  	// 해당 과목의 전체 평균
+  	return (double)SumScore / (double)StudentScores.size();
+  }
   
   ```
 
