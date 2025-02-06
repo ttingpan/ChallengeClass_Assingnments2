@@ -75,7 +75,7 @@
 </details>
 
 <details>
-<summary><b>추가 기능 : 성적 구간 검색 기능</b></summary>
+<summary><b>추가 기능 : 과목별 성적 통계 기능</b></summary>
 
 ![image](https://github.com/user-attachments/assets/0356d8e4-2cb8-4347-a2f5-820cf7717da5)
 
