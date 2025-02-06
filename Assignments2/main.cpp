@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <set>
 #include <map>
 #include <vector>
@@ -11,110 +11,105 @@ using namespace std;
 class StudentScoreManager
 {
 private:
-	// ÇĞ»ı Á¤º¸¸¦ ´ãÀ» ¸Ê
-	// key = ÇĞ»ı ¹øÈ£, value = ÇØ´ç ÇĞ»ıÀÇ ¼ºÀû
+	// í•™ìƒ ì •ë³´ë¥¼ ë‹´ì„ ë§µ
+	// key = í•™ìƒ ë²ˆí˜¸, value = í•´ë‹¹ í•™ìƒì˜ ì„±ì (key = ê³¼ëª©, value = í•´ë‹¹ ê³¼ëª©ì˜ ì ìˆ˜)
 	map<int, map<string, int>> Students;
 
-	// ÇöÀç±îÁö Ãß°¡µÈ °ú¸ñ ¸ñ·Ï
+	// í•™ìƒë“¤ì´ ìˆ˜ê°•í•œ ê³¼ëª© ëª©ë¡
 	set<string> Subjects;
 
 public:
-	// ÇĞ»ı Á¡¼ö Ãß°¡
+	// í•™ìƒ ì ìˆ˜ ì¶”ê°€
 	void AddStudentScore(int Id, string Subject, int Score)
 	{
 		cout << endl;
 
-		// °ú¸ñ Ãß°¡
+		// ê³¼ëª© ì¶”ê°€
 		Subjects.insert(Subject);
 
-		// ¼ºÀû ÃÖ½ÅÈ­
+		// ì„±ì  ìµœì‹ í™”
 		Students[Id][Subject] = Score;
 
-		cout << Id << "¹ø ÇĞ»ıÀÇ \'" << Subject << "\'ÀÇ Á¡¼ö°¡ " << Score << "(À¸)·Î ÃÖ½ÅÈ­ µÇ¾ú½À´Ï´Ù." << endl;
+		cout << Id << "ë²ˆ í•™ìƒì˜ \'" << Subject << "\'ì˜ ì ìˆ˜ê°€ " << Score << "(ìœ¼)ë¡œ ìµœì‹ í™” ë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
 
 		cout << endl;
 	}
 
-	// Æ¯Á¤ ÇĞ»ıÀÇ ¸ğµç °ú¸ñ ¼ºÀû Ãâ·Â
+	// íŠ¹ì • í•™ìƒì˜ ëª¨ë“  ê³¼ëª© ì„±ì  ì¶œë ¥
 	void PrintAllScoreByStudentId(int Id)
 	{
 		cout << endl;
 
-		// ÀÔ·ÂÇÑ ¹øÈ£ÀÇ ÇĞ»ıÀÌ ¾øÀ» °æ¿ì
+		// ì…ë ¥í•œ ë²ˆí˜¸ì˜ í•™ìƒì´ ì—†ì„ ê²½ìš°
 		if (Students.find(Id) == Students.end())
 		{
-			cout << Id << "¹ø ÇĞ»ıÀÇ Á¤º¸°¡ ¾ø½À´Ï´Ù." << endl;
+			cout << Id << "ë²ˆ í•™ìƒì˜ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤." << endl;
 			cout << endl;
 			return;
 		}
 
-		// Æ¯Á¤ ÇĞ»ıÀÇ ¸ğµç °ú¸ñ ¼ºÀû
+		// íŠ¹ì • í•™ìƒì˜ ëª¨ë“  ê³¼ëª© ì„±ì 
 		map<string, int> Scores{ Students[Id] };
 
-		cout << Id << "¹ø ÇĞ»ıÀÇ ¼ºÀû: " << endl;
+		cout << Id << "ë²ˆ í•™ìƒì˜ ì„±ì : " << endl;
 
 		for (auto& [Subject, Score] : Scores)
 		{
-			cout << "- " << Subject << ": " << Score << "Á¡" << endl;
+			cout << "- " << Subject << ": " << Score << "ì " << endl;
 		}
 
 		cout << endl;
 	}
 
-	// °¢ °ú¸ñº° ÀüÃ¼ ÇĞ»ıÀÇ Æò±Õ Á¡¼ö Ãâ·Â
+	// ê° ê³¼ëª©ë³„ ì „ì²´ í•™ìƒì˜ í‰ê·  ì ìˆ˜ ì¶œë ¥
 	void PrintAllSubjectAverageScore()
 	{
 		cout << endl;
-		// °ú¸ñº° Á¡¼ö ¸ÖÆ¼ ¸Ê
-		multimap<string, int> AllScores;
 
-		// ÀüÃ¼ ÇĞ»ı ¼øÈ¸
+		// ê³¼ëª©ë³„ ì ìˆ˜ í•©ê³„
+		map<string, int> SumScores;
+		// ê³¼ëª©ë³„ í•™ìƒ ìˆ˜
+		map<string, int> StudentCount;
+
+		// ì „ì²´ í•™ìƒ ìˆœíšŒ
 		for (auto& [Id, Scores] : Students)
 		{
-			// °¢ ÇĞ»ıº° ¼ºÀû
+			// ê° í•™ìƒë³„ ì„±ì 
 			for (auto& [Subject, Score] : Scores)
 			{
-				// °ú¸ñº° Á¡¼ö Ãß°¡
-				AllScores.insert({ Subject, Score });
+				// í•´ë‹¹ ê³¼ëª©ë³„ ì ìˆ˜ í•©ê³„ì— í•´ë‹¹ í•™ìƒì˜ ì ìˆ˜ ì¶”ê°€
+				SumScores[Subject] += Score;
+				// í•´ë‹¹ ê³¼ëª©ë³„ í•™ìƒ ìˆ˜ ì¦ê°€
+				StudentCount[Subject]++;
 			}
 		}
 
-		cout << "ÀüÃ¼ °ú¸ñ Æò±Õ Á¡¼ö: " << endl;
+		cout << "ì „ì²´ ê³¼ëª© í‰ê·  ì ìˆ˜: " << endl;
 
+		// í•™ìƒë“¤ì´ ìˆ˜ê°•í•œ ëª¨ë“  ê³¼ëª© ìˆœíšŒ
 		for (string Subject : Subjects)
 		{
-			// °ú¸ñÀÌ SubjectÀÎ ¸ğµç Á¡¼ö Á¶È¸
-			auto Range = AllScores.equal_range(Subject);
-			// ÇØ´ç Á¡¼öµéÀÇ ÇÕ
-			int Sum = 0;
-			for (auto& It = Range.first; It != Range.second; It++)
-			{
-				Sum += It->second;
-			}
-			// ÇØ´ç Á¡¼öµéÀÇ °³¼ö
-			int Count = AllScores.count(Subject);
+			// í•´ë‹¹ ê³¼ëª©ì˜ ì „ì²´ í‰ê· 
+			double Avg = (double)SumScores[Subject] / (double)StudentCount[Subject];
 
-			// ÇØ´ç °ú¸ñÀÇ ÀüÃ¼ Æò±Õ
-			double Avg = (double)Sum / (double)Count;
-
-			// ¼Ò¼öÁ¡ µÑÂ° ÀÚ¸®±îÁö Ç¥ÇöÇÏ±â À§ÇØ °è»ê
+			// ì†Œìˆ˜ì  ë‘˜ì§¸ ìë¦¬ê¹Œì§€ í‘œí˜„í•˜ê¸° ìœ„í•´ ê³„ì‚°
 			Avg *= 100;
 			Avg = round(Avg);
 			Avg /= 100;
 
-			cout << "- " << Subject << ": " << Avg << "Á¡" << endl;
+			cout << "- " << Subject << ": " << Avg << "ì " << endl;
 		}
 
 		cout << endl;
 	}
 
-	// ÇØ´ç °ú¸ñÀÌ ÀúÀåµÈ °ú¸ñÀÎÁö È®ÀÎ(ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÑ ÇĞ»ıÀÌ ÀÖ´ÂÁö È®ÀÎ)
+	// í•´ë‹¹ ê³¼ëª©ì´ ì €ì¥ëœ ê³¼ëª©ì¸ì§€ í™•ì¸(í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•œ í•™ìƒì´ ìˆëŠ”ì§€ í™•ì¸)
 	bool IsTakingSubject(string Subject)
 	{
-		// ÀúÀåµÈ °ú¸ñÀÌ ¾Æ´Ñ °æ¿ì(ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÑ ÇĞ»ıÀÌ ¾ø´Â °æ¿ì)
+		// ì €ì¥ëœ ê³¼ëª©ì´ ì•„ë‹Œ ê²½ìš°(í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•œ í•™ìƒì´ ì—†ëŠ” ê²½ìš°)
 		if (Subjects.find(Subject) == Subjects.end())
 		{
-			cout << "\nÇØ´ç °ú¸ñÀ» ¼ö°­ÇÑ ÇĞ»ıÀÌ ¾ø½À´Ï´Ù." << endl;
+			cout << "\ní•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•œ í•™ìƒì´ ì—†ìŠµë‹ˆë‹¤." << endl;
 			cout << endl;
 			return false;
 		}
@@ -122,25 +117,25 @@ public:
 		return true;
 	}
 
-	// Æ¯Á¤ °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ı ¸ñ·Ï
-	// first = ÇĞ»ı ¹øÈ£, second = ÇØ´ç °ú¸ñ Á¡¼ö
-	// ±âº» ÇĞ»ı ¹øÈ£ ±âÁØ ¿À¸§Â÷¼ø Á¤·Ä
+	// íŠ¹ì • ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒ ëª©ë¡
+	// first = í•™ìƒ ë²ˆí˜¸, second = í•´ë‹¹ ê³¼ëª© ì ìˆ˜
+	// í•™ìƒ ë²ˆí˜¸ ê¸°ì¤€ ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬
 	vector<pair<int, int>> GetStudentsBySubject(string Subject)
 	{
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ì˜ ë²ˆí˜¸ì™€ ì ìˆ˜
 		vector<pair<int, int>> StudentScores;
 
-		// ÀüÃ¼ ÇĞ»ı ¼øÈ¸
+		// ì „ì²´ í•™ìƒ ìˆœíšŒ
 		for (auto& [Id, Scores] : Students)
 		{
-			// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıÀÏ °æ¿ì
+			// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒì¼ ê²½ìš°
 			if (Scores.find(Subject) != Scores.end())
 			{
 				StudentScores.push_back({Id, Scores[Subject]});
 			}
 		}
 
-		// ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
+		// í•™ìƒ ë²ˆí˜¸ ê¸°ì¤€ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
 		sort(StudentScores.begin(), StudentScores.end(),
 			[](pair<int, int> A, pair<int, int> B)
 			{
@@ -150,112 +145,108 @@ public:
 		return StudentScores;
 	}
 
-	// Æ¯Á¤ °ú¸ñ¿¡¼­ °¡Àå ³ôÀº Á¡¼ö¸¦ ¹ŞÀº ÇĞ»ıµé Ãâ·Â
+	// íŠ¹ì • ê³¼ëª©ì—ì„œ ê°€ì¥ ë†’ì€ ì ìˆ˜ë¥¼ ë°›ì€ í•™ìƒë“¤ ì¶œë ¥
 	void PrintTopStudentsBySubejct(string Subject)
 	{
 		cout << endl;
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ì˜ ë²ˆí˜¸ì™€ ì ìˆ˜
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 		
-		// ÃÖ°í Á¡¼ö ÇĞ»ıµéÀÇ ¹øÈ£
+		// ìµœê³  ì ìˆ˜ í•™ìƒë“¤ì˜ ë²ˆí˜¸
 		vector<int> StudentIDs;
 
-		// ÃÖ°í Á¡¼ö
+		// ìµœê³  ì ìˆ˜
 		int TopScore = 0;
 
-		// ÀüÃ¼ ÇĞ»ı ¼øÈ¸
+		// ì „ì²´ í•™ìƒ ìˆœíšŒ
 		for (auto& [Id, Score] : StudentScores)
 		{
-			// ÇöÀç Á¡¼ö°¡ ÀÌÀü ÃÖ°í Á¡¼öº¸´Ù Å¬ °æ¿ì
+			// í˜„ì¬ ì ìˆ˜ê°€ ì´ì „ ìµœê³  ì ìˆ˜ë³´ë‹¤ í´ ê²½ìš°
 			if (Score > TopScore)
 			{
 				StudentIDs.clear();
 				StudentIDs.push_back(Id);
 				TopScore = Score;
 			}
-			// ÇöÀç Á¡¼ö°¡ ÀÌÀü ÃÖ°í Á¡¼ö¿Í °°À» °æ¿ì
+			// í˜„ì¬ ì ìˆ˜ê°€ ì´ì „ ìµœê³  ì ìˆ˜ì™€ ê°™ì„ ê²½ìš°
 			else if (Score == TopScore)
 			{
 				StudentIDs.push_back(Id);
 			}
 		}
 
-		cout << "\'" << Subject << "\' ÃÖ°í Á¡¼ö: " << TopScore << "Á¡" << endl;
+		cout << "\'" << Subject << "\' ìµœê³  ì ìˆ˜: " << TopScore << "ì " << endl;
 
 		for (int Id : StudentIDs)
 		{
-			cout << "- ÇĞ»ı ¹øÈ£: " << Id << endl;
+			cout << "- í•™ìƒ ë²ˆí˜¸: " << Id << endl;
 		}
 
 		cout << endl;
 	}
 
-	// Æ¯Á¤ °ú¸ñ¿¡¼­ ÁöÁ¤µÈ Á¡¼ö ±¸°£(ÀÌ»ó, ÀÌÇÏ)¿¡ ÇØ´çÇÏ´Â ÇĞ»ı ¸ñ·ÏÀ» Ãâ·Â
+	// íŠ¹ì • ê³¼ëª©ì—ì„œ ì§€ì •ëœ ì ìˆ˜ êµ¬ê°„(ì´ìƒ, ì´í•˜)ì— í•´ë‹¹í•˜ëŠ” í•™ìƒ ëª©ë¡ì„ ì¶œë ¥
 	void PrintStudentsInScoreRange(string Subject, int MinScore, int MaxScore)
 	{
 		cout << endl;
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ì˜ ë²ˆí˜¸ì™€ ì ìˆ˜
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıÀÌ°í ÁöÁ¤µÈ Á¡¼ö ±¸°£¿¡ ÇØ´çÇÏ´Â ÇĞ»ı ¸ñ·Ï
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒì´ê³  ì§€ì •ëœ ì ìˆ˜ êµ¬ê°„ì— í•´ë‹¹í•˜ëŠ” í•™ìƒ ëª©ë¡
 		vector<int> StudentIDs;
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£ ¼øÈ¸
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ ë²ˆí˜¸ ìˆœíšŒ
 		for (auto& [Id, Score] : StudentScores)
 		{
-			// ÁöÁ¤µÈ Á¡¼ö ±¸°£¿¡ ÇØ´çÇÏ´Â ÇĞ»ıÀÏ °æ¿ì
+			// ì§€ì •ëœ ì ìˆ˜ êµ¬ê°„ì— í•´ë‹¹í•˜ëŠ” í•™ìƒì¼ ê²½ìš°
 			if (Score >= MinScore && Score <= MaxScore)
 			{
 				StudentIDs.push_back(Id);
 			}
 		}
 
-		cout << "\'" << Subject << "\' Á¡¼ö°¡ "<< MinScore << "Á¡ ~ " << MaxScore<< "Á¡ »çÀÌÀÎ ÇĞ»ı ¸ñ·Ï : " << endl;
+		cout << "\'" << Subject << "\' ì ìˆ˜ê°€ "<< MinScore << "ì  ~ " << MaxScore<< "ì  ì‚¬ì´ì¸ í•™ìƒ ëª©ë¡ : " << endl;
 
 		for (int Id : StudentIDs)
 		{
-			cout << "- ÇĞ»ı ¹øÈ£: " << Id << endl;
+			cout << "- í•™ìƒ ë²ˆí˜¸: " << Id << endl;
 		}
 
 		cout << endl;
 	}
 
-	// Æ¯Á¤ °ú¸ñÀÇ ÃÖ°í/ÃÖÀú Æò±Õ Á¡¼ö ¹× ¼ö°­ ÀÎ¿øÀ» Ãâ·Â
+	// íŠ¹ì • ê³¼ëª©ì˜ ìµœê³ /ìµœì € í‰ê·  ì ìˆ˜ ë° ìˆ˜ê°• ì¸ì›ì„ ì¶œë ¥
 	void PrintSubjectScoreStats(string Subject)
 	{
 		cout << endl;
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ì˜ ë²ˆí˜¸ì™€ ì ìˆ˜
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 
-		// Á¡¼ö ±âÁØÀ¸·Î ¿À¸§Â÷¼ø Á¤·Ä
+		// ì ìˆ˜ ê¸°ì¤€ìœ¼ë¡œ ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬
 		sort(StudentScores.begin(), StudentScores.end(),
 			[](pair<int, int> A, pair<int, int> B)
 			{
 				return A.second < B.second;
 			});
 
-		// ÃÖÀú / ÃÖ°í / Æò±Õ Á¡¼ö
+		// ìµœì € / ìµœê³  / í‰ê·  ì ìˆ˜
 		int MinScore = StudentScores.front().second, MaxScore = StudentScores.back().second;
-		double AvgScore = 0.0;
+		
 
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£ ¼øÈ¸
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ì˜ ì ìˆ˜ ì´í•©
+		int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0);
+		double AvgScore = (double) SumScore / (double) StudentScores.size();
+
+		cout << "\'" << Subject << "\' ìµœì € ì ìˆ˜: " << MinScore << "ì , ìµœê³  ì ìˆ˜: " << MaxScore << "ì , í‰ê·  ì ìˆ˜: "<< AvgScore << endl;
+		cout << "ìˆ˜ê°• í•™ìƒ ë²ˆí˜¸ ëª©ë¡: " << endl;
+
+		// í•´ë‹¹ ê³¼ëª©ì„ ìˆ˜ê°•í•˜ëŠ” í•™ìƒë“¤ ë²ˆí˜¸ ìˆœíšŒ
 		for (auto& [Id, Score] : StudentScores)
 		{
-			AvgScore += Score;
-		}
-
-		AvgScore /= StudentScores.size();
-
-		cout << "\'" << Subject << "\' ÃÖÀú Á¡¼ö: " << MinScore << "Á¡, ÃÖ°í Á¡¼ö: " << MaxScore << "Á¡, Æò±Õ Á¡¼ö: "<< AvgScore << endl;
-		cout << "¼ö°­ ÇĞ»ı ¹øÈ£ ¸ñ·Ï: " << endl;
-
-		// ÇØ´ç °ú¸ñÀ» ¼ö°­ÇÏ´Â ÇĞ»ıµé ¹øÈ£ ¼øÈ¸
-		for (auto& [Id, Score] : StudentScores)
-		{
-			cout << "- ÇĞ»ı ¹øÈ£: " << Id << ", Á¡¼ö: " << Score << "Á¡" << endl;
+			cout << "- í•™ìƒ ë²ˆí˜¸: " << Id << ", ì ìˆ˜: " << Score << "ì " << endl;
 		}
 
 		cout << endl;
@@ -265,161 +256,161 @@ public:
 
 int main()
 {
-	// ÇĞ»ı ¼ºÀû °ü¸® ÇÁ·Î±×·¥ »ı¼º
+	// í•™ìƒ ì„±ì  ê´€ë¦¬ í”„ë¡œê·¸ë¨ ìƒì„±
 	StudentScoreManager Manager;
 
 	while (true)
 	{
 		cout << "=======================" << endl;
-		cout << "ÇĞ»ı ¼ºÀû °ü¸® ÇÁ·Î±×·¥" << endl;
+		cout << "í•™ìƒ ì„±ì  ê´€ë¦¬ í”„ë¡œê·¸ë¨" << endl;
 		cout << "=======================" << endl;
-		cout << "1. ÇĞ»ı ¼ºÀû Ãß°¡" << endl;
-		cout << "2. ÇĞ»ı ¼ºÀû Á¶È¸" << endl;
-		cout << "3. ÀüÃ¼ Æò±Õ Á¡¼ö Ãâ·Â" << endl;
-		cout << "4. °ú¸ñº° ÃÖ°í Á¡¼ö ÇĞ»ı Á¶È¸" << endl;
-		cout << "5. ¼ºÀû ±¸°£ °Ë»ö" << endl;
-		cout << "6. °ú¸ñº° ¼ºÀû Åë°è" << endl;
-		cout << "7. Á¾·á" << endl;
-		cout << "¼±ÅÃ : ";
+		cout << "1. í•™ìƒ ì„±ì  ì¶”ê°€" << endl;
+		cout << "2. í•™ìƒ ì„±ì  ì¡°íšŒ" << endl;
+		cout << "3. ì „ì²´ í‰ê·  ì ìˆ˜ ì¶œë ¥" << endl;
+		cout << "4. ê³¼ëª©ë³„ ìµœê³  ì ìˆ˜ í•™ìƒ ì¡°íšŒ" << endl;
+		cout << "5. ì„±ì  êµ¬ê°„ ê²€ìƒ‰" << endl;
+		cout << "6. ê³¼ëª©ë³„ ì„±ì  í†µê³„" << endl;
+		cout << "7. ì¢…ë£Œ" << endl;
+		cout << "ì„ íƒ : ";
 
 		int Choice;
 		cin >> Choice;
 
 		if (Choice == 1)
 		{
-			// ¹øÈ£
+			// ë²ˆí˜¸
 			int StudentId;
-			cout << "\n¼ºÀûÀ» Ãß°¡ÇÒ ÇĞ»ıÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.(¾çÀÇ Á¤¼ö): ";
+			cout << "\nì„±ì ì„ ì¶”ê°€í•  í•™ìƒì˜ ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.(ì–‘ì˜ ì •ìˆ˜): ";
 			cin >> StudentId;
 
 			if (!cin || StudentId < 1)
 			{
-				cout << "\nÇĞ»ı ¹øÈ£´Â ¾çÀÇ Á¤¼ö¸¸ ÀÔ·Â °¡´ÉÇÕ´Ï´Ù." << endl;
+				cout << "\ní•™ìƒ ë²ˆí˜¸ëŠ” ì–‘ì˜ ì •ìˆ˜ë§Œ ì…ë ¥ ê°€ëŠ¥í•©ë‹ˆë‹¤." << endl;
 				cout << endl;
 				cin.clear();
 				cin.ignore();
 				continue;
 			}
 
-			// °ú¸ñ
+			// ê³¼ëª©
 			string Subject;
-			cout << "\n¼ºÀûÀ» Ãß°¡ÇÒ °ú¸ñÀÇ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.: ";
-			// ÀÌÀü ÀÔ·ÂÀÇ ÀÜ¿© ¹öÆÛ¸¦ Á¦°Å
+			cout << "\nì„±ì ì„ ì¶”ê°€í•  ê³¼ëª©ì˜ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.: ";
+			// ì´ì „ ì…ë ¥ì˜ ì”ì—¬ ë²„í¼ë¥¼ ì œê±°
 			cin.ignore();
 			getline(cin, Subject);
 
-			// ¼ºÀû
+			// ì„±ì 
 			int Score;
-			cout << "\n¼ºÀûÀ» Ãß°¡ÇÒ °ú¸ñÀÇ Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.(0 ~ 100): ";
+			cout << "\nì„±ì ì„ ì¶”ê°€í•  ê³¼ëª©ì˜ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.(0 ~ 100): ";
 			cin >> Score;
 
 			if (!cin || Score < 0 || Score > 100)
 			{
-				cout << "\nÁ¡¼ö´Â 0 ~ 100 »çÀÌ Á¡¼ö¸¸ ÀÔ·Â °¡´ÉÇÕ´Ï´Ù." << endl;
+				cout << "\nì ìˆ˜ëŠ” 0 ~ 100 ì‚¬ì´ ì ìˆ˜ë§Œ ì…ë ¥ ê°€ëŠ¥í•©ë‹ˆë‹¤." << endl;
 				cout << endl;
 				cin.clear();
 				cin.ignore();
 				continue;
 			}
 
-			// ¼ºÀû Ãß°¡
+			// ì„±ì  ì¶”ê°€
 			Manager.AddStudentScore(StudentId, Subject, Score);
 		}
 		else if (Choice == 2)
 		{
-			// ¹øÈ£
+			// ë²ˆí˜¸
 			int StudentId;
-			cout << "\n¼ºÀûÀ» Á¶È¸ÇÒ ÇĞ»ıÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.(¾çÀÇ Á¤¼ö): ";
+			cout << "\nì„±ì ì„ ì¡°íšŒí•  í•™ìƒì˜ ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.(ì–‘ì˜ ì •ìˆ˜): ";
 			cin >> StudentId;
 
-			// ÇĞ»ı ¼ºÀû Ãâ·Â
+			// í•™ìƒ ì„±ì  ì¶œë ¥
 			Manager.PrintAllScoreByStudentId(StudentId);
 		}
 		else if (Choice == 3)
 		{
-			// ÀüÃ¼ °ú¸ñ Æò±Õ Á¡¼ö Ãâ·Â
+			// ì „ì²´ ê³¼ëª© í‰ê·  ì ìˆ˜ ì¶œë ¥
 			Manager.PrintAllSubjectAverageScore();
 		}
 		else if (Choice == 4)
 		{
-			// °ú¸ñ
+			// ê³¼ëª©
 			string Subject;
-			cout << "\nÃÖ°í Á¡¼ö ÇĞ»ıµéÀ» Ã£À» °ú¸ñÀÇ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.: ";
-			// ÀÌÀü ÀÔ·ÂÀÇ ÀÜ¿© ¹öÆÛ¸¦ Á¦°Å
+			cout << "\nìµœê³  ì ìˆ˜ í•™ìƒë“¤ì„ ì°¾ì„ ê³¼ëª©ì˜ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.: ";
+			// ì´ì „ ì…ë ¥ì˜ ì”ì—¬ ë²„í¼ë¥¼ ì œê±°
 			cin.ignore();
 			getline(cin, Subject);
 
 			if (Manager.IsTakingSubject(Subject))
 			{
-				// Æ¯Á¤ °ú¸ñ ÃÖ°í Á¡¼ö ÇĞ»ıµé Ãâ·Â
+				// íŠ¹ì • ê³¼ëª© ìµœê³  ì ìˆ˜ í•™ìƒë“¤ ì¶œë ¥
 				Manager.PrintTopStudentsBySubejct(Subject);
 			}
 		}
 		else if (Choice == 5)
 		{
-			// °ú¸ñ
+			// ê³¼ëª©
 			string Subject;
-			cout << "\n¼ºÀûÀ» Á¶È¸ÇÒ °ú¸ñÀÇ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.: ";
-			// ÀÌÀü ÀÔ·ÂÀÇ ÀÜ¿© ¹öÆÛ¸¦ Á¦°Å
+			cout << "\nì„±ì ì„ ì¡°íšŒí•  ê³¼ëª©ì˜ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.: ";
+			// ì´ì „ ì…ë ¥ì˜ ì”ì—¬ ë²„í¼ë¥¼ ì œê±°
 			cin.ignore();
 			getline(cin, Subject);
 
 			if (Manager.IsTakingSubject(Subject))
 			{
 				int MinScore, MaxScore;
-				cout << "\n¼ºÀûÀ» Á¶È¸ÇÒ ÃÖÀú Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.(0 ~ 100): ";
+				cout << "\nì„±ì ì„ ì¡°íšŒí•  ìµœì € ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.(0 ~ 100): ";
 				cin >> MinScore;
 
 				if (!cin || MinScore < 0 || MinScore > 100)
 				{
-					cout << "\nÃÖÀú Á¡¼ö´Â 0 ~ 100 »çÀÌ Á¡¼ö¸¸ ÀÔ·Â °¡´ÉÇÕ´Ï´Ù." << endl;
+					cout << "\nìµœì € ì ìˆ˜ëŠ” 0 ~ 100 ì‚¬ì´ ì ìˆ˜ë§Œ ì…ë ¥ ê°€ëŠ¥í•©ë‹ˆë‹¤." << endl;
 					cout << endl;
 					cin.clear();
 					cin.ignore();
 					continue;
 				}
 
-				cout << "\n¼ºÀûÀ» Á¶È¸ÇÒ ÃÖ°í Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä. (" << MinScore << " ~ 100): ";
+				cout << "\nì„±ì ì„ ì¡°íšŒí•  ìµœê³  ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”. (" << MinScore << " ~ 100): ";
 				cin >> MaxScore;
 
 				if (!cin || MaxScore < MinScore || MaxScore > 100)
 				{
-					cout << "\nÃÖ°í Á¡¼ö´Â " << MinScore << " ~ 100 »çÀÌ Á¡¼ö¸¸ ÀÔ·Â °¡´ÉÇÕ´Ï´Ù." << endl;
+					cout << "\nìµœê³  ì ìˆ˜ëŠ” " << MinScore << " ~ 100 ì‚¬ì´ ì ìˆ˜ë§Œ ì…ë ¥ ê°€ëŠ¥í•©ë‹ˆë‹¤." << endl;
 					cout << endl;
 					cin.clear();
 					cin.ignore();
 					continue;
 				}
 
-				// ÇØ´ç °ú¸ñÀÇ ÃÖÀú/ÃÖ°í »çÀÌÀÇ Á¡¼ö¸¦ °¡Áø ÇĞ»ıµé Ãâ·Â
+				// í•´ë‹¹ ê³¼ëª©ì˜ ìµœì €/ìµœê³  ì‚¬ì´ì˜ ì ìˆ˜ë¥¼ ê°€ì§„ í•™ìƒë“¤ ì¶œë ¥
 				Manager.PrintStudentsInScoreRange(Subject, MinScore, MaxScore);
 			}
 		}
 		else if (Choice == 6)
 		{
-			// °ú¸ñ
+			// ê³¼ëª©
 			string Subject;
-			cout << "\n¼ºÀûÀ» Åë°è¸¦ È®ÀÎÇÒ °ú¸ñÀÇ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.: ";
-			// ÀÌÀü ÀÔ·ÂÀÇ ÀÜ¿© ¹öÆÛ¸¦ Á¦°Å
+			cout << "\nì„±ì ì„ í†µê³„ë¥¼ í™•ì¸í•  ê³¼ëª©ì˜ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.: ";
+			// ì´ì „ ì…ë ¥ì˜ ì”ì—¬ ë²„í¼ë¥¼ ì œê±°
 			cin.ignore();
 			getline(cin, Subject);
 
 			if (Manager.IsTakingSubject(Subject))
 			{
-				// ÇØ´ç °ú¸ñÀÇ Åë°è(ÃÖÀú/ÃÖ°í/Æò±Õ Á¡¼ö, ¼ö°­ ÇĞ»ı ¹øÈ£)¸¦ Ãâ·Â
+				// í•´ë‹¹ ê³¼ëª©ì˜ í†µê³„(ìµœì €/ìµœê³ /í‰ê·  ì ìˆ˜, ìˆ˜ê°• í•™ìƒ ë²ˆí˜¸)ë¥¼ ì¶œë ¥
 				Manager.PrintSubjectScoreStats(Subject);
 			}
 		}
 		else if (Choice == 7)
 		{
-			cout << "\nÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù." << endl;
-			break; // while ·çÇÁ Á¾·á
+			cout << "\ní”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
+			break; // while ë£¨í”„ ì¢…ë£Œ
 		}
 		else
 		{
-			// Àß¸øµÈ ÀÔ·Â Ã³¸®
-			// ¸Ş´º¿¡ ¾ø´Â ¹øÈ£¸¦ ÀÔ·ÂÇßÀ» °æ¿ì °æ°í ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-			cout << "\nÀß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇÏ¼¼¿ä.\n\n";
+			// ì˜ëª»ëœ ì…ë ¥ ì²˜ë¦¬
+			// ë©”ë‰´ì— ì—†ëŠ” ë²ˆí˜¸ë¥¼ ì…ë ¥í–ˆì„ ê²½ìš° ê²½ê³  ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+			cout << "\nì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì„¸ìš”.\n\n";
 			cin.clear();
 			cin.ignore();
 		}
