@@ -38,7 +38,58 @@
 
 ### 사용한 컨테이너 종류와 이유
 
+- **map**과 **set**
+  - 학생 번호 혹은 과목 등으로 `특정한 데이터(Key)`로 `필요한 데이터(Value)`를 가져오기 위해 사용했다.
+    > 학생 번호(`key`)를 입력하여 해당 학생의 성적(`value`)를 가져오는 등에 사용했다.
 
+  ```cpp
+
+  // 학생 정보를 담을 맵
+  // key = 학생 번호, value = 해당 학생의 성적(key = 과목, value = 해당 과목의 점수)
+  map<int, map<string, int>> Students;
+
+  // 학생들이 수강한 과목 목록
+  set<string> Subjects;
+  
+  ```
+
+- **vector**
+  - 특정한 상황에 해당하는 학생 목록을 출력 할때 임시로 배열을 만들때 사용했다.
+    > 특정 과목에서 가장 높은 점수를 받은 학생들 출력 할 경우, 특정 과목에서 지정된 점수 구간(이상, 이하)에 해당하는 학생 목록을 출력 할 경우 등에 사용했다.
+  - `map`에 담겨있는 데이터를 정렬해서 사용하기 위해 사용했다.
+    > 학생 번호를 기준으로 데이터 정렬, 특정 과목에 대해 학생들의 점수를 기준으로 데이터 정렬 등에 사용했다.
+
+  ```cpp
+
+  // 특정 과목을 수강하는 학생 목록
+  // first = 학생 번호, second = 해당 과목 점수
+  // 학생 번호 기준 오름차순 정렬
+  vector<pair<int, int>> GetStudentsBySubject(string Subject)
+  {
+  	// 해당 과목을 수강하는 학생들의 번호와 점수
+  	vector<pair<int, int>> StudentScores;
+  
+  	// 전체 학생 순회
+  	for (auto& [Id, Scores] : Students)
+  	{
+  		// 해당 과목을 수강하는 학생일 경우
+  		if (Scores.find(Subject) != Scores.end())
+  		{
+  			StudentScores.push_back({Id, Scores[Subject]});
+  		}
+  	}
+  
+  	// 학생 번호 기준 오름차순으로 정렬
+  	sort(StudentScores.begin(), StudentScores.end(),
+  		[](pair<int, int> A, pair<int, int> B)
+  		{
+  			return A.first < B.first;
+  		});
+  
+  	return StudentScores;
+  }
+
+  ```
 
 ### 효율적인 데이터 관리를 위한 설계 방식
 
@@ -46,9 +97,32 @@
 
 ### 사용한 STL알고리즘과 필요했던 이유
 
+- **sort**
+  - 데이터를 출력 할 떄 정렬된 데이터 목록으로 출력하기 위해 사용했다.
 
+  ```cpp
+  
+  // 학생 번호 기준 오름차순으로 정렬
+  sort(StudentScores.begin(), StudentScores.end(),
+  	[](pair<int, int> A, pair<int, int> B)
+  	{
+  		return A.first < B.first;
+  	});
+  
+  return StudentScores;
+  
+  ```
 
+- **accumulate**
+  - 평균 값을 구하기 위한 총합을 구할때 사용했다.
 
+  ```cpp
+  
+  // 해당 과목을 수강하는 학생들의 점수 총합
+  int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0);
+  double AvgScore = (double) SumScore / (double) StudentScores.size();
+  
+  ```
 
 
 
