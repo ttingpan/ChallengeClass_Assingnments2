@@ -34,6 +34,53 @@
   - 특정 과목의 최고/최저 평균 점수 및 수강 인원을 출력한다.
 
 ---
+
+## 구현 결과 이미지
+
+<details>
+<summary><b>학생 성적 추가 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/abd8e5fd-5071-45ff-bffa-1960b9c71dca)
+  
+</details>
+
+<details>
+<summary><b>학생의 전체 성적 조회 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/40885794-a95f-42f5-b78f-746ffb960fc6)
+  
+</details>
+
+<details>
+<summary><b>전체 학생의 평균 점수 출력 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/51621b54-8dba-4b25-8a81-930508ab8c28)
+  
+</details>
+
+<details>
+<summary><b>과목별 최고 점수 학생 조회 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/d9a57d14-5b42-41c1-84b1-eee67741bced)
+
+![image](https://github.com/user-attachments/assets/4249a954-9690-4fc7-bcc3-dad36fd8256d)
+  
+</details>
+
+<details>
+<summary><b>추가 기능 : 성적 구간 검색 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/e40ca043-b1f2-4ae5-b229-1c86156910b2)
+
+</details>
+
+<details>
+<summary><b>추가 기능 : 성적 구간 검색 기능</b></summary>
+
+![image](https://github.com/user-attachments/assets/0356d8e4-2cb8-4347-a2f5-820cf7717da5)
+
+</details>
+
 ---
 
 ## 구현 내용 설명
