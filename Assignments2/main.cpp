@@ -248,7 +248,7 @@ public:
 		// 평균 점수
 		double AvgScore = GetAverageScoreBySubject(Subject);
 
-		cout << "\'" << Subject << "\' 최저 점수: " << MinScore << "점, 최고 점수: " << MaxScore << "점, 평균 점수: "<< AvgScore << endl;
+		cout << "\'" << Subject << "\' 최저 점수: " << MinScore << "점, 최고 점수: " << MaxScore << "점, 평균 점수: "<< AvgScore << "점" << endl;
 		cout << "수강 학생 번호 목록: " << endl;
 
 		// 해당 과목을 수강한 학생들 번호 순회
