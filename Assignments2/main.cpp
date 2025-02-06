@@ -33,12 +33,12 @@ public:
 		return true;
 	}
 
-	// 특정 과목을 수강하는 학생 목록
+	// 특정 과목을 수강한 학생 목록
 	// first = 학생 번호, second = 해당 과목 점수
 	// 학생 번호 기준 오름차순 정렬
 	vector<pair<int, int>> GetStudentsBySubject(string Subject)
 	{
-		// 해당 과목을 수강하는 학생들의 번호와 점수
+		// 해당 과목을 수강한 학생들의 번호와 점수
 		vector<pair<int, int>> StudentScores;
 
 		// 전체 학생 순회
@@ -160,7 +160,7 @@ public:
 	{
 		cout << endl;
 
-		// 해당 과목을 수강하는 학생들의 번호와 점수
+		// 해당 과목을 수강한 학생들의 번호와 점수
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 		
 		// 최고 점수 학생들의 번호
@@ -201,13 +201,13 @@ public:
 	{
 		cout << endl;
 
-		// 해당 과목을 수강하는 학생들의 번호와 점수
+		// 해당 과목을 수강한 학생들의 번호와 점수
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 
-		// 해당 과목을 수강하는 학생이고 지정된 점수 구간에 해당하는 학생 목록
+		// 해당 과목을 수강한 학생이고 지정된 점수 구간에 해당하는 학생 목록
 		vector<int> StudentIDs;
 
-		// 해당 과목을 수강하는 학생들 번호 순회
+		// 해당 과목을 수강한 학생들 번호 순회
 		for (auto& [Id, Score] : StudentScores)
 		{
 			// 지정된 점수 구간에 해당하는 학생일 경우
@@ -232,7 +232,7 @@ public:
 	{
 		cout << endl;
 
-		// 해당 과목을 수강하는 학생들의 번호와 점수
+		// 해당 과목을 수강한 학생들의 번호와 점수
 		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
 
 		// 점수 기준으로 오름차순 정렬
@@ -251,7 +251,7 @@ public:
 		cout << "\'" << Subject << "\' 최저 점수: " << MinScore << "점, 최고 점수: " << MaxScore << "점, 평균 점수: "<< AvgScore << endl;
 		cout << "수강 학생 번호 목록: " << endl;
 
-		// 해당 과목을 수강하는 학생들 번호 순회
+		// 해당 과목을 수강한 학생들 번호 순회
 		for (auto& [Id, Score] : StudentScores)
 		{
 			cout << "- 학생 번호: " << Id << ", 점수: " << Score << "점" << endl;
