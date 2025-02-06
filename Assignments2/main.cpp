@@ -19,6 +19,49 @@ private:
 	set<string> Subjects;
 
 public:
+	// 해당 과목이 저장된 과목인지 확인(해당 과목을 수강한 학생이 있는지 확인)
+	bool IsTakingSubject(string Subject)
+	{
+		// 저장된 과목이 아닌 경우(해당 과목을 수강한 학생이 없는 경우)
+		if (Subjects.find(Subject) == Subjects.end())
+		{
+			cout << "\n해당 과목을 수강한 학생이 없습니다." << endl;
+			cout << endl;
+			return false;
+		}
+
+		return true;
+	}
+
+	// 특정 과목을 수강하는 학생 목록
+	// first = 학생 번호, second = 해당 과목 점수
+	// 학생 번호 기준 오름차순 정렬
+	vector<pair<int, int>> GetStudentsBySubject(string Subject)
+	{
+		// 해당 과목을 수강하는 학생들의 번호와 점수
+		vector<pair<int, int>> StudentScores;
+
+		// 전체 학생 순회
+		for (auto& [Id, Scores] : Students)
+		{
+			// 해당 과목을 수강하는 학생일 경우
+			if (Scores.find(Subject) != Scores.end())
+			{
+				StudentScores.push_back({ Id, Scores[Subject] });
+			}
+		}
+
+		// 학생 번호 기준 오름차순으로 정렬
+		sort(StudentScores.begin(), StudentScores.end(),
+			[](pair<int, int> A, pair<int, int> B)
+			{
+				return A.first < B.first;
+			});
+
+		return StudentScores;
+	}
+
+
 	// 학생 점수 추가
 	void AddStudentScore(int Id, string Subject, int Score)
 	{
@@ -67,31 +110,34 @@ public:
 		cout << endl;
 
 		// 과목별 점수 합계
-		map<string, int> SumScores;
-		// 과목별 학생 수
-		map<string, int> StudentCount;
+		int SumScore;
 
-		// 전체 학생 순회
-		for (auto& [Id, Scores] : Students)
+		// 과목별 평균 점수
+		map<string, double> ScoreAvg;
+
+		// 학생들이 수강한 전체 과목 목록 순회
+		for (string Subject : Subjects)
 		{
-			// 각 학생별 성적
-			for (auto& [Subject, Score] : Scores)
-			{
-				// 해당 과목별 점수 합계에 해당 학생의 점수 추가
-				SumScores[Subject] += Score;
-				// 해당 과목별 학생 수 증가
-				StudentCount[Subject]++;
-			}
+			vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
+
+			// 해당 과목의 점수 합계
+			SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+				[](int A, pair<int, int> B)
+				{
+					return A + B.second;
+				});
+
+			// 해당 과목의 전체 평균
+			double Avg = (double)SumScore / (double)StudentScores.size();
+
+			ScoreAvg.insert({ Subject, Avg });
 		}
 
 		cout << "전체 과목 평균 점수: " << endl;
 
 		// 학생들이 수강한 모든 과목 순회
-		for (string Subject : Subjects)
+		for (auto& [Subject, Avg] : ScoreAvg)
 		{
-			// 해당 과목의 전체 평균
-			double Avg = (double)SumScores[Subject] / (double)StudentCount[Subject];
-
 			// 소수점 둘째 자리까지 표현하기 위해 계산
 			Avg *= 100;
 			Avg = round(Avg);
@@ -101,48 +147,6 @@ public:
 		}
 
 		cout << endl;
-	}
-
-	// 해당 과목이 저장된 과목인지 확인(해당 과목을 수강한 학생이 있는지 확인)
-	bool IsTakingSubject(string Subject)
-	{
-		// 저장된 과목이 아닌 경우(해당 과목을 수강한 학생이 없는 경우)
-		if (Subjects.find(Subject) == Subjects.end())
-		{
-			cout << "\n해당 과목을 수강한 학생이 없습니다." << endl;
-			cout << endl;
-			return false;
-		}
-
-		return true;
-	}
-
-	// 특정 과목을 수강하는 학생 목록
-	// first = 학생 번호, second = 해당 과목 점수
-	// 학생 번호 기준 오름차순 정렬
-	vector<pair<int, int>> GetStudentsBySubject(string Subject)
-	{
-		// 해당 과목을 수강하는 학생들의 번호와 점수
-		vector<pair<int, int>> StudentScores;
-
-		// 전체 학생 순회
-		for (auto& [Id, Scores] : Students)
-		{
-			// 해당 과목을 수강하는 학생일 경우
-			if (Scores.find(Subject) != Scores.end())
-			{
-				StudentScores.push_back({Id, Scores[Subject]});
-			}
-		}
-
-		// 학생 번호 기준 오름차순으로 정렬
-		sort(StudentScores.begin(), StudentScores.end(),
-			[](pair<int, int> A, pair<int, int> B)
-			{
-				return A.first < B.first;
-			});
-
-		return StudentScores;
 	}
 
 	// 특정 과목에서 가장 높은 점수를 받은 학생들 출력
@@ -236,8 +240,12 @@ public:
 		int MinScore = StudentScores.front().second, MaxScore = StudentScores.back().second;
 		
 
-		// 해당 과목을 수강하는 학생들의 점수 총합
-		int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0);
+		// 해당 과목을 수강하는 학생들의 점수 합계
+		int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+			[](int A, pair<int, int> B)
+			{
+				return A + B.second;
+			});
 		double AvgScore = (double) SumScore / (double) StudentScores.size();
 
 		cout << "\'" << Subject << "\' 최저 점수: " << MinScore << "점, 최고 점수: " << MaxScore << "점, 평균 점수: "<< AvgScore << endl;
