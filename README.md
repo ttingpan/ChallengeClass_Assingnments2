@@ -34,6 +34,8 @@
   - 특정 과목의 최고/최저 평균 점수 및 수강 인원을 출력한다.
 
 ---
+---
+
 ## 구현 내용 설명
 
 ### 사용한 컨테이너 종류와 이유
@@ -61,12 +63,12 @@
 
   ```cpp
 
-  // 특정 과목을 수강하는 학생 목록
+  // 특정 과목을 수강한 학생 목록
   // first = 학생 번호, second = 해당 과목 점수
   // 학생 번호 기준 오름차순 정렬
   vector<pair<int, int>> GetStudentsBySubject(string Subject)
   {
-  	// 해당 과목을 수강하는 학생들의 번호와 점수
+  	// 해당 과목을 수강한 학생들의 번호와 점수
   	vector<pair<int, int>> StudentScores;
   
   	// 전체 학생 순회
@@ -75,7 +77,7 @@
   		// 해당 과목을 수강하는 학생일 경우
   		if (Scores.find(Subject) != Scores.end())
   		{
-  			StudentScores.push_back({Id, Scores[Subject]});
+  			StudentScores.push_back({ Id, Scores[Subject] });
   		}
   	}
   
@@ -90,10 +92,92 @@
   }
 
   ```
+---
 
 ### 효율적인 데이터 관리를 위한 설계 방식
 
+- 자주 사용하는 `조건`이나 `데이터` 등을 함수로 만들어서 필요할때 사용 할수 있도록 했다.
 
+- **입력한 과목이 수강한 학생이 있는 과목인지 판별하는 함수**
+  - 과목을 입력 받을 때 수강한 학생이 없는 과목이면 `false`를 반환 하는 함수
+
+  ``` cpp
+
+  // 해당 과목이 저장된 과목인지 확인(해당 과목을 수강한 학생이 있는지 확인)
+  bool IsTakingSubject(string Subject)
+  {
+  	// 저장된 과목이 아닌 경우(해당 과목을 수강한 학생이 없는 경우)
+  	if (Subjects.find(Subject) == Subjects.end())
+  	{
+  		cout << "\n해당 과목을 수강한 학생이 없습니다." << endl;
+  		cout << endl;
+  		return false;
+  	}
+  
+  	return true;
+  }
+  
+  ```
+
+- **특정 과목을 수강한 학생 목록**
+  - 해당 과목을 수강한 학생의 학생 번호와 해당 과목의 점수를 담은 벡터를 반환하는 함수
+
+ ``` cpp
+
+  // 특정 과목을 수강한 학생 목록
+  // first = 학생 번호, second = 해당 과목 점수
+  // 학생 번호 기준 오름차순 정렬
+  vector<pair<int, int>> GetStudentsBySubject(string Subject)
+  {
+  	// 해당 과목을 수강한 학생들의 번호와 점수
+  	vector<pair<int, int>> StudentScores;
+  
+  	// 전체 학생 순회
+  	for (auto& [Id, Scores] : Students)
+  	{
+  		// 해당 과목을 수강하는 학생일 경우
+  		if (Scores.find(Subject) != Scores.end())
+  		{
+  			StudentScores.push_back({ Id, Scores[Subject] });
+  		}
+  	}
+  
+  	// 학생 번호 기준 오름차순으로 정렬
+  	sort(StudentScores.begin(), StudentScores.end(),
+  		[](pair<int, int> A, pair<int, int> B)
+  		{
+  			return A.first < B.first;
+  		});
+  
+  	return StudentScores;
+  }
+  
+  ```
+
+- **특정 과목에 대한 평균 점수**
+  - 해당 과목을 수강한 학생들의 전체 평균 점수를 반환하는 함수
+
+  ```cpp
+
+  // 특정 과목에 대한 평균 점수
+  double GetAverageScoreBySubject(string Subject)
+  {
+  	vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
+  
+  	// 해당 과목의 점수 합계
+  	int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+  		[](int A, pair<int, int> B)
+  		{
+  			return A + B.second;
+  		});
+  
+  	// 해당 과목의 전체 평균
+  	return (double)SumScore / (double)StudentScores.size();
+  }
+  
+  ```
+
+---  
 
 ### 사용한 STL알고리즘과 필요했던 이유
 
@@ -118,9 +202,21 @@
 
   ```cpp
   
-  // 해당 과목을 수강하는 학생들의 점수 총합
-  int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0);
-  double AvgScore = (double) SumScore / (double) StudentScores.size();
+  // 특정 과목에 대한 평균 점수
+  double GetAverageScoreBySubject(string Subject)
+  {
+  	vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
+  
+  	// 해당 과목의 점수 합계
+  	int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+  		[](int A, pair<int, int> B)
+  		{
+  			return A + B.second;
+  		});
+  
+  	// 해당 과목의 전체 평균
+  	return (double)SumScore / (double)StudentScores.size();
+  }
   
   ```
 
