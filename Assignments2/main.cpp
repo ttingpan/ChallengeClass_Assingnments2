@@ -61,6 +61,21 @@ public:
 		return StudentScores;
 	}
 
+	// 특정 과목에 대한 평균 점수
+	double GetAverageScoreBySubject(string Subject)
+	{
+		vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
+
+		// 해당 과목의 점수 합계
+		int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
+			[](int A, pair<int, int> B)
+			{
+				return A + B.second;
+			});
+
+		// 해당 과목의 전체 평균
+		return (double)SumScore / (double)StudentScores.size();
+	}
 
 	// 학생 점수 추가
 	void AddStudentScore(int Id, string Subject, int Score)
@@ -118,17 +133,8 @@ public:
 		// 학생들이 수강한 전체 과목 목록 순회
 		for (string Subject : Subjects)
 		{
-			vector<pair<int, int>> StudentScores = GetStudentsBySubject(Subject);
-
-			// 해당 과목의 점수 합계
-			SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
-				[](int A, pair<int, int> B)
-				{
-					return A + B.second;
-				});
-
 			// 해당 과목의 전체 평균
-			double Avg = (double)SumScore / (double)StudentScores.size();
+			double Avg = GetAverageScoreBySubject(Subject);
 
 			ScoreAvg.insert({ Subject, Avg });
 		}
@@ -236,17 +242,11 @@ public:
 				return A.second < B.second;
 			});
 
-		// 최저 / 최고 / 평균 점수
+		// 최저 / 최고
 		int MinScore = StudentScores.front().second, MaxScore = StudentScores.back().second;
-		
 
-		// 해당 과목을 수강하는 학생들의 점수 합계
-		int SumScore = accumulate(StudentScores.begin(), StudentScores.end(), 0,
-			[](int A, pair<int, int> B)
-			{
-				return A + B.second;
-			});
-		double AvgScore = (double) SumScore / (double) StudentScores.size();
+		// 평균 점수
+		double AvgScore = GetAverageScoreBySubject(Subject);
 
 		cout << "\'" << Subject << "\' 최저 점수: " << MinScore << "점, 최고 점수: " << MaxScore << "점, 평균 점수: "<< AvgScore << endl;
 		cout << "수강 학생 번호 목록: " << endl;
